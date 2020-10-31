@@ -1,0 +1,22 @@
+{
+  "name": "ghdbjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agustim/ghdbjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agustim/ghdbjs/issues"
+  },
+  "homepage": "https://github.com/agustim/ghdbjs#readme",
+  "devDependencies": {
+    "jest-cli": "^26.6.1"
+  }
+}
