@@ -9,16 +9,18 @@ var ghdbObj = new Ghdb( { personalAccessToken: process.env.ACCESSTOKEN,
 //console.log(ghdbObj.toString())
 ghdbObj.lowWriteGithub("hola.json", {hello: 'World'})
 .then((data) => {
-    console.log(data)
     ghdbObj.lowReadGithub("hola.json")
     .then((data) => {
         console.log(data)
         ghdbObj.lowWriteGithub("hola.json", {hello: 'Universe'})
         .then((data) => {
-            console.log(data)
             ghdbObj.lowReadGithub("hola.json")
             .then((data) => {
                 console.log(data)
+                ghdbObj.lowDeleteGithub("hola.json")
+                .then((data) => {
+                    console.log(data)
+                })
             })
         })
     })

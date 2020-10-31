@@ -64,6 +64,30 @@ function Ghdb ( config ) {
             return null
         }
     }
+    this.lowDeleteGithub = async function (filename) {
+        const options = this.getOptions(filename)
+        const octokit = new Octokit({
+            auth: "token " + this.personalAccessToken,
+        });
+        var obj = Object.assign(options,{
+            message: `deleteObject`,
+        })
+
+        var current = await this.lowReadGithub(filename)
+        if (current != null) {
+            obj.sha = current.sha
+            return octokit.repos.deleteFile(
+                obj
+            )
+            .then((data) => {
+                return data
+            }, (error) => {
+                console.log("ERROR:" + error)
+                return error
+            })
+        }
+        return null
+    }
 }
 
 module.exports = Ghdb;
