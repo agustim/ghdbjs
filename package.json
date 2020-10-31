@@ -18,5 +18,8 @@
   "homepage": "https://github.com/agustim/ghdbjs#readme",
   "devDependencies": {
     "jest-cli": "^26.6.1"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }
