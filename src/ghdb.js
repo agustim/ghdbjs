@@ -26,7 +26,11 @@ function Ghdb ( config ) {
             message: `writeObject`,
             content: Buffer.from(JSON.stringify(obj)).toString('base64'),
         })
-    
+
+        var current = await this.lowReadGithub(filename)
+        if (current != null) {
+            obj.sha = current.sha
+        }
         return octokit.repos.createOrUpdateFileContents(
             obj
         )
@@ -55,7 +59,7 @@ function Ghdb ( config ) {
         var content = Buffer.from(res.data.content, 'base64').toString()
         try {
             content = JSON.parse(content)
-            return content            
+            return { content: content , sha: res.data.sha }            
         } catch (e) {
             return null
         }

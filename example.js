@@ -13,6 +13,14 @@ ghdbObj.lowWriteGithub("hola.json", {hello: 'World'})
     ghdbObj.lowReadGithub("hola.json")
     .then((data) => {
         console.log(data)
+        ghdbObj.lowWriteGithub("hola.json", {hello: 'Universe'})
+        .then((data) => {
+            console.log(data)
+            ghdbObj.lowReadGithub("hola.json")
+            .then((data) => {
+                console.log(data)
+            })
+        })
     })
 })
 
