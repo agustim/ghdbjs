@@ -30,7 +30,7 @@ function Ghdb ( config ) {
 
     this.generateUID = async function() {
         const epochNow = Math.floor(new Date().getTime()).toString() + crypto.randomBytes(5).toString('hex')
-        const uuid = crypto.createHash('sha256').update(epochNow, 'utf8').digest().toString('hex')
+        const uuid = crypto.createHash('sha1').update(epochNow, 'utf8').digest().toString('hex')
         return uuid
     }
 

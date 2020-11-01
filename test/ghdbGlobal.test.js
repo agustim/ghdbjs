@@ -13,6 +13,6 @@ beforeAll(()=>{
 test("Generate UID", () => {
     return ghdbObj.generateUID()
     .then( data => {
-        expect(data.length).toBe(64);
+        expect(data.length).toBe(40);
     })
 })
