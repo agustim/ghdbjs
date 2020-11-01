@@ -38,15 +38,6 @@ test("Delete existent file", () => {
 test("Delete does not file", () => {
     return ghdbObj.lowDeleteGithub(filename)
     .then( data => {
-        console.log(data)
         expect(data).toBe(null)
-    })
-})
-
-test("Generate UID", () => {
-    return ghdbObj.generateUID()
-    .then( data => {
-        console.log(data)
-        expect(data).toBe("");
     })
 })
