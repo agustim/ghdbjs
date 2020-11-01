@@ -42,3 +42,11 @@ test("Delete does not file", () => {
         expect(data).toBe(null)
     })
 })
+
+test("Generate UID", () => {
+    return ghdbObj.generateUID()
+    .then( data => {
+        console.log(data)
+        expect(data).toBe("");
+    })
+})

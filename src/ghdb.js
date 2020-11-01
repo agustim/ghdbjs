@@ -1,11 +1,14 @@
 const { Octokit } = require("@octokit/rest");
+const crypto = require('crypto');
 
 /* Create element */
 function Ghdb ( config ) {
     this.personalAccessToken = config.personalAccessToken;
     this.owner = config.owner
     this.repo = config.repo;
-    this.path =config.path;
+    this.path = config.path;
+
+    this.storage = "storage/" 
     this.toString = function(){
         return JSON.stringify(this)
     }
@@ -15,6 +18,22 @@ function Ghdb ( config ) {
             repo: this.repo,
             path: this.path + filename
         });
+    }
+    this.generateUID = async function() {
+        const epochNow = Math.floor(new Date().getTime()).toString() + crypto.randomBytes(5).toString('hex')
+        const uuid = crypto.createHash('sha256').update(epochNow, 'utf8').digest().toString('hex')
+        return uuid
+    }
+
+    this.create = async function (obj, listCategories) {
+        if (!listCategories) {
+            listCategories = []
+        }
+        // Write record
+        const uuid = await this.generateUID()
+        this.lowWriteGithub(this.storage + uuid, obj)
+        // Write in categories
+
     }
 
     this.lowWriteGithub = async function (filename, obj) {
