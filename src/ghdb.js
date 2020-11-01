@@ -7,6 +7,7 @@ function Ghdb ( config ) {
     this.owner = config.owner
     this.repo = config.repo;
     this.path = config.path;
+    this.octokit = null;
 
     this.storage = "storage/" 
     this.toString = function(){
@@ -19,6 +20,14 @@ function Ghdb ( config ) {
             path: this.path + filename
         });
     }
+    this.connectOctokit = function() {
+        if (!this.octokit) {
+            this.octokit = new Octokit({
+                auth: "token " + this.personalAccessToken,
+            });
+        }
+    }
+
     this.generateUID = async function() {
         const epochNow = Math.floor(new Date().getTime()).toString() + crypto.randomBytes(5).toString('hex')
         const uuid = crypto.createHash('sha256').update(epochNow, 'utf8').digest().toString('hex')
@@ -38,9 +47,7 @@ function Ghdb ( config ) {
 
     this.lowWriteGithub = async function (filename, obj) {
         const options = this.getOptions(filename)
-        const octokit = new Octokit({
-            auth: "token " + this.personalAccessToken,
-        });
+        this.connectOctokit();
         var obj = Object.assign(options,{
             message: `writeObject`,
             content: Buffer.from(JSON.stringify(obj)).toString('base64'),
@@ -50,7 +57,7 @@ function Ghdb ( config ) {
         if (current != null) {
             obj.sha = current.sha
         }
-        return octokit.repos.createOrUpdateFileContents(
+        return this.octokit.repos.createOrUpdateFileContents(
             obj
         )
         .then((data) => {
@@ -62,12 +69,10 @@ function Ghdb ( config ) {
     }
     this.lowReadGithub = async function (filename) {
         const options = this.getOptions(filename)
-        const octokit = new Octokit({
-            auth: "token " + this.personalAccessToken,
-        });
+        this.connectOctokit();
         let res = null
         try {
-            res = await octokit.repos.getContent(options)
+            res = await this.octokit.repos.getContent(options)
         } catch(e) {
             return null     
         }
@@ -85,9 +90,7 @@ function Ghdb ( config ) {
     }
     this.lowDeleteGithub = async function (filename) {
         const options = this.getOptions(filename)
-        const octokit = new Octokit({
-            auth: "token " + this.personalAccessToken,
-        });
+        this.connectOctokit();
         var obj = Object.assign(options,{
             message: `deleteObject`,
         })
@@ -95,7 +98,7 @@ function Ghdb ( config ) {
         var current = await this.lowReadGithub(filename)
         if (current != null) {
             obj.sha = current.sha
-            return octokit.repos.deleteFile(
+            return this.octokit.repos.deleteFile(
                 obj
             )
             .then((data) => {
