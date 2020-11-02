@@ -68,7 +68,7 @@ function Ghdb ( config ) {
         await this.lowDeleteGithub(this.selfCategory + uuid)
         // Remove element
         await this.lowDeleteGithub(this.storage + uuid)
-        return {status:ok}
+        return {status: "ok"}
     }
 
     this.getFromCategory = async function ( category ) {
@@ -113,6 +113,7 @@ function Ghdb ( config ) {
         var res = await this.lowReadGithubCall(filename)
         if (!res) return null
         var content = Buffer.from(res.data.content, 'base64').toString()
+        if (!content) return { sha: res.data.sha }
         try {
             content = JSON.parse(content)
             return { content: content , sha: res.data.sha }            

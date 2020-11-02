@@ -31,3 +31,9 @@ test("Read last register", () =>  {
     })
 })
 
+test("Remove register", () => {
+    return ghdbObj.remove(guuid)
+    .then ( data => (
+        expect(data.status).toBe("ok")
+    ))
+})
