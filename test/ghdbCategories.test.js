@@ -40,6 +40,17 @@ test("Read Categories from last register", () => {
     })
 })
 
+test("Read all registres from Category", () => {
+    return ghdbObj.getFromCategory("post")
+    .then( data => {
+        var listContent = data.filter( e => {
+            var parts = e.path.split("/")
+            return (parts[ parts.length - 1 ] === guuid )
+        })
+        expect(listContent.length).toBe(1)
+    })
+})
+
 test("Remove register", () => {
     return ghdbObj.remove(guuid)
     .then ( data => (
