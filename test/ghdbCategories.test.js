@@ -2,6 +2,8 @@ const Ghdb = require("../src/ghdb");
 require('dotenv').config({debug: true});
 var ghdbObj
 var guuid
+const ObjectReg = {hello: 'World'}
+const ArrCategories =  ['post', 'important']
 
 jest.setTimeout(60000)
 
@@ -17,7 +19,7 @@ test("Create object", () => {
 });
 
 test("Create register", () => {
-    return ghdbObj.create({hello: 'World'}, ['post', 'important'])
+    return ghdbObj.create(ObjectReg, ArrCategories)
     .then( data => {
         guuid = data
         expect(data.length).toBe(40);
@@ -27,7 +29,14 @@ test("Create register", () => {
 test("Read last register", () =>  {
     return ghdbObj.read(guuid)
     .then ( data => {
-        expect(data.content.hello).toBe('World')
+        expect(data.content.hello).toBe(ObjectReg.hello)
+    })
+})
+
+test("Read Categories from last register", () => {
+    return ghdbObj.readCategoriesFromUuid(guuid)
+    .then ( data => { 
+        expect(JSON.stringify(data)).toBe(JSON.stringify(ArrCategories))
     })
 })
 

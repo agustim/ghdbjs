@@ -57,6 +57,10 @@ function Ghdb ( config ) {
     this.read = async function (uuid) {
         return this.lowReadGithub (this.storage + uuid)
     }
+    this.readCategoriesFromUuid = async function (uuid) {
+        var ret = await this.lowReadGithub (this.selfCategory + uuid)
+        return ret.content
+    }
     this.remove = async function (uuid) {
         // Get selfCategories
         var listCategories = await this.lowReadGithub(this.selfCategory + uuid)
