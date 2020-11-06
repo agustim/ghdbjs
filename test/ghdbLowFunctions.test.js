@@ -2,6 +2,7 @@ const Ghdb = require("../src/ghdb");
 require('dotenv').config({debug: true});
 var ghdbObj
 var filename = "test.json"
+jest.setTimeout(60000)
 
 beforeAll(()=>{
     ghdbObj = new Ghdb( { personalAccessToken: process.env.ACCESSTOKEN, 
@@ -17,7 +18,7 @@ test("Create object", () => {
 test("Write file", () => {
     return ghdbObj.lowWriteGithub(filename, {hello: 'World'})
     .then( data => {
-        expect(data.status).toBe(201)
+        expect(data.status.toString().substring(0,2)).toBe("20")
     })
 })
 
