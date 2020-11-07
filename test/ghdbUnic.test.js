@@ -1,12 +1,14 @@
 // Unic test file
 const Ghdb = require("../src/ghdb");
-require('dotenv').config({debug: true});
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, `../.env.${process.env.NODE_ENV}`) });
 var ghdbObj
 var filename
 var envGlobal = { ObjectReg: {hello: 'World'}, ArrCategories: ['post', 'important'] }
 jest.setTimeout(60000)
 
 beforeAll(()=>{
+    console.log(process.env)
     ghdbObj = new Ghdb( { personalAccessToken: process.env.ACCESSTOKEN, 
         owner: process.env.GH_USER, 
         repo: process.env.GH_REPOSITORY, 
@@ -80,8 +82,7 @@ test("Read all registres from Category", () => {
     return ghdbObj.getFromCategoryObjects("post")
     .then( data => {
         var listContent = data.filter( e => {
-            var parts = e.path.split("/")
-            return (parts[ parts.length - 1 ] === envGlobal.guuid )
+            return (e.content.uuid === envGlobal.guuid )
         })
         expect(listContent.length).toBe(1)
     })
