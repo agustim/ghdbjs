@@ -9,11 +9,13 @@
 
 
     try {
-        await ghdbObj.create({title: "First post", body:"some text here.", author: "me"}, ['post', 'home'])
-        await ghdbObj.create({title: "Second post", body:"some another text.", author: "me"}, ['post'])
-        await ghdbObj.create({title: "Third post", body:"some different text.", author: "me"}, ['post'])
+     //   await ghdbObj.create({title: "First post", body:"some text here.", author: "me"}, ['post', 'home'])
+     //   await ghdbObj.create({title: "Second post", body:"some another text.", author: "me"}, ['post'])
+     //   await ghdbObj.create({title: "Third post", body:"some different text.", author: "me"}, ['post'])
 
-        console.log(await ghdbObj.getFromCategoryObjects('post'))
+        var myList = await ghdbObj.getFromCategoryObjects('post')
+        await ghdbObj.sortByField(myList, "updateAt", "ASC")
+        console.log(myList)
     } catch (e) {
         console.log("Something wrong: " + e)
     }
