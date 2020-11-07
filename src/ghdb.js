@@ -75,8 +75,13 @@ function Ghdb ( config ) {
         return {status: "ok"}
     }
 
-    this.getFromCategory = async function ( category ) {
-        return this.lowReadDirGithub(this.category + category)
+    this.getFromCategoryObjects = async function ( category ) {
+        const res = await this.lowReadDirGithub(this.category + category)
+        if (!res) return null
+        const asyncRes = await Promise.all(res.map(async (e) => {
+            return this.lowReadGithub (this.storage + e.path);
+        }));
+        return asyncRes
     }
 
     this.lowWriteGithub = async function (filename, reg) {
@@ -127,8 +132,10 @@ function Ghdb ( config ) {
     }
     this.lowReadDirGithub = async function (dir) {
         var res = await this.lowReadGithubCall(dir)
+        if (!res) return null
         const asyncRes = await Promise.all(res.data.map(async (e) => {
-            return {path: e.path, type: e.type};
+            const newPath = e.path.split('/')
+            return {path: newPath[newPath.length - 1], type: e.type};
         }));
         return asyncRes
     }

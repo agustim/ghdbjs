@@ -77,7 +77,7 @@ test("Read Categories from last register", () => {
 })
 
 test("Read all registres from Category", () => {
-    return ghdbObj.getFromCategory("post")
+    return ghdbObj.getFromCategoryObjects("post")
     .then( data => {
         var listContent = data.filter( e => {
             var parts = e.path.split("/")
