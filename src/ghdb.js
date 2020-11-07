@@ -35,11 +35,12 @@ function Ghdb ( config ) {
         const uuid = crypto.createHash('sha1').update(epochNow, 'utf8').digest().toString('hex')
         return uuid
     }
-    this.automaticFields = async function(o) {
+    this.automaticFields = async function(o, uuid) {
         const ara = new Date().getTime()
         if (!o.createAt)
             o['createAt'] = ara
         o['updateAt'] = ara
+        o['uuid'] = uuid
         return o  
     }
 
@@ -50,10 +51,10 @@ function Ghdb ( config ) {
         if (!Array.isArray(listCategories)) {
             listCategories = [ listCategories ]
         }
-        // Add some fields if not exist.
-        obj = await this.automaticFields(obj)
-        // Write record
         const uuid = await this.generateUID()
+        // Add some fields if not exist.
+        obj = await this.automaticFields(obj, uuid)
+        // Write record
         await this.lowWriteGithub(this.storage + uuid, obj)
         // Write in selfCategories
         await this.lowWriteGithub(this.selfCategory + uuid, listCategories)
