@@ -93,6 +93,20 @@ function Ghdb ( config ) {
         return asyncRes
     }
 
+    this.sortByField = async function (data, field, direction) {
+        data.sort(function(a,b){
+            if (!direction || direction === 'ASC'){
+                if (a.content[field] < b.content[field]) return -1
+                if (a.content[field] > b.content[field]) return 1
+                if (a.content[field] == b.content[field]) return 0
+            } else {
+                if (a.content[field] > b.content[field]) return -1
+                if (a.content[field] < b.content[field]) return 1
+                if (a.content[field] == b.content[field]) return 0
+            }
+        })
+    }
+
     this.lowWriteGithub = async function (filename, reg) {
         const options = this.getOptions(filename)
         this.connectOctokit();
