@@ -67,10 +67,7 @@ function Ghdb ( config ) {
     this.read = async function (uuid) {
         return this.lowReadGithub (this.storage + uuid)
     }
-    this.readCategoriesFromUuid = async function (uuid) {
-        var ret = await this.lowReadGithub (this.selfCategory + uuid)
-        return ret.content
-    }
+
     this.remove = async function (uuid) {
         // Get selfCategories
         var listCategories = await this.lowReadGithub(this.selfCategory + uuid)
@@ -83,6 +80,54 @@ function Ghdb ( config ) {
         // Remove element
         await this.lowDeleteGithub(this.storage + uuid)
         return {status: "ok"}
+    }
+
+    this.upload = async function (uuid, obj){
+
+    }
+
+    this.addCategoryToUuid = async function (uuid, category){
+        
+    }
+
+    this.removeCategoryToUuid = async function (uuid, category){
+
+    }
+
+    this.readCategoriesFromUuid = async function (uuid) {
+        var ret = await this.lowReadGithub (this.selfCategory + uuid)
+        return ret.content
+    }
+
+    this.changeCategoriesFromUuid = async function(uuid, categories) {
+        var oldCategories = await this.readCategoriesFromUuid(uuid)
+    }
+
+    this.splitCategories = async function(categories, oldCategories) {
+        // Sort both arrays.
+        categories.sort()
+        oldCategories.sort()
+        var indCat = 0
+        var indOldCat
+        var addCat = []
+        var remCat = []
+        var keepCat = []
+        for(indOldCat=0; indOldCat < oldCategories.length; indOldCat++){
+            while (categories[indCat] < oldCategories[indOldCat]){
+                addCat.push(categories[indCat])
+                indCat++
+            }
+            if (categories[indCat] == oldCategories[indOldCat]){
+                keepCat.push(categories[indCat])
+                indCat++
+            } else {
+                remCat.push(oldCategories[indOldCat])
+            }
+        }
+        for(;indCat < categories.length; indCat++) {
+            addCat.push(categories[indCat])
+        }
+        return { add: addCat, rem: remCat, keep: keepCat}
     }
 
     this.getFromCategoryObjects = async function ( category ) {
