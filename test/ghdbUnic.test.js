@@ -8,7 +8,6 @@ var envGlobal = { ObjectReg: {hello: 'World'}, ArrCategories: ['post', 'importan
 jest.setTimeout(60000)
 
 beforeAll(()=>{
-    console.log(process.env)
     ghdbObj = new Ghdb( { personalAccessToken: process.env.ACCESSTOKEN, 
         owner: process.env.GH_USER, 
         repo: process.env.GH_REPOSITORY, 
