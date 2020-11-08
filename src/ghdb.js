@@ -51,6 +51,7 @@ function Ghdb ( config ) {
         if (!Array.isArray(listCategories)) {
             listCategories = [ listCategories ]
         }
+        listCategories.sort()
         const uuid = await this.generateUID()
         // Add some fields if not exist.
         obj = await this.automaticFields(obj, uuid)
@@ -83,15 +84,31 @@ function Ghdb ( config ) {
     }
 
     this.upload = async function (uuid, obj){
-
+        obj = await this.automaticFields(obj, uuid)
+        // Write record
+        await this.lowWriteGithub(this.storage + uuid, obj)
+        return obj
     }
 
     this.addCategoryToUuid = async function (uuid, category){
-        
+        var oldCategories = await this.readCategoriesFromUuid(uuid)
+        if (oldCategories.indexOf(category) == -1){
+            var categories = oldCategories.concat(category).sort()
+            await this.lowWriteGithub(this.category + category + "/" + uuid)
+            await this.lowWriteGithub(this.selfCategory + uuid, categories)
+        }
+        return categories
     }
 
     this.removeCategoryToUuid = async function (uuid, category){
-
+        var oldCategories = await this.readCategoriesFromUuid(uuid)
+        const indexDelete = oldCategories.indexOf(category)
+        if (indexDelete > -1){
+            oldCategories.splice(indexDelete,1)
+            await this.lowDeleteGithub(this.category + category + "/" + uuid)
+            await this.lowWriteGithub(this.selfCategory + uuid, oldCategories)
+        }
+        return oldCategories
     }
 
     this.readCategoriesFromUuid = async function (uuid) {
@@ -101,6 +118,19 @@ function Ghdb ( config ) {
 
     this.changeCategoriesFromUuid = async function(uuid, categories) {
         var oldCategories = await this.readCategoriesFromUuid(uuid)
+        var sCategories = await this.splitCategories(categories,oldCategories)
+        categories.sort()
+        // Remove categories
+        for await(let e of sCategories.rem) {
+            await this.lowDeleteGithub(this.category + e + "/" + uuid)
+        }
+        // Add categories
+        for await(let e of sCategories.add) {
+            await this.lowWriteGithub(this.category + e + "/" + uuid)
+        }
+        // Fixed categori group
+        await this.lowWriteGithub(this.selfCategory + uuid, categories)
+        return categories
     }
 
     this.splitCategories = async function(categories, oldCategories) {

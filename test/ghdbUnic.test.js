@@ -4,7 +4,12 @@ const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, `../.env.${process.env.NODE_ENV}`) });
 var ghdbObj
 var filename
-var envGlobal = { ObjectReg: {hello: 'World'}, ArrCategories: ['post', 'important'] }
+var envGlobal = { ObjectReg: { 
+                    hello: 'World'}, 
+                    ArrCategories: ['post', 'important'], 
+                    ArrChangeCategories: ['post','information','free'],
+                    NewCategory: 'balance'
+                }
 jest.setTimeout(60000)
 
 beforeAll(()=>{
@@ -17,7 +22,6 @@ beforeAll(()=>{
         filename = d + ".data"
     })
 })
-
 
 test("Generate UID", () => {
     return ghdbObj.generateUID()
@@ -87,11 +91,34 @@ test("Read all registres from Category", () => {
     })
 })
 
+test("Changes Categories from register", () => {
+    return ghdbObj.changeCategoriesFromUuid(envGlobal.guuid, envGlobal.ArrChangeCategories)
+    .then ( data => {
+        envGlobal.ArrChangeCategories.sort()
+        expect(data).toEqual(envGlobal.ArrChangeCategories)
+    })
+})
+test("Add category", () => {
+    return ghdbObj.addCategoryToUuid(envGlobal.guuid, envGlobal.NewCategory)
+    .then ( data => {
+        var arrTemp = JSON.parse(JSON.stringify(envGlobal.ArrChangeCategories))
+        arrTemp.push(envGlobal.NewCategory)
+        arrTemp.sort()
+        expect(data).toEqual(arrTemp)
+    })
+})
+
+test("Remove category", () => {
+    return ghdbObj.removeCategoryToUuid(envGlobal.guuid, envGlobal.NewCategory)
+    .then ( data => {
+        expect(data).toEqual(envGlobal.ArrChangeCategories)
+    })
+})
+
 test("Remove register", () => {
     return ghdbObj.remove(envGlobal.guuid)
     .then ( data => (
         expect(data.status).toBe("ok")
     ))
 })
-
 
