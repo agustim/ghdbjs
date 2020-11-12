@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/agustim/ghdbjs.git"
   },
-  "author": "",
+  "author": "Agustí Moll <agusti@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/agustim/ghdbjs/issues"
