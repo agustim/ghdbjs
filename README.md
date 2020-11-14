@@ -9,7 +9,7 @@ In this approach, we add categories like a relation with object.
 
 You can see example.js to create registers and read this registers.
 ```
-    const Ghdb = require("./src/ghdb");
+    const Ghdb = require("ghdbjs");
     require('dotenv').config({debug: true});
 
     var ghdbObj = new Ghdb( { personalAccessToken: process.env.ACCESSTOKEN, 

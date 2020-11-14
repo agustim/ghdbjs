@@ -1,5 +1,5 @@
 (async () => {
-    const Ghdb = require("./src/ghdb");
+    const Ghdb = require("./ghdb");
     require('dotenv').config({debug: true});
 
     var ghdbObj = new Ghdb( { personalAccessToken: process.env.ACCESSTOKEN, 

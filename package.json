@@ -2,7 +2,7 @@
   "name": "ghdbjs",
   "version": "1.0.0",
   "description": "",
-  "main": "src/ghdb.js",
+  "main": "ghdb.js",
   "scripts": {
     "test": "jest"
   },
