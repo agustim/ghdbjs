@@ -17,10 +17,10 @@
   },
   "homepage": "https://github.com/agustim/ghdbjs#readme",
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "jest-cli": "^26.6.1"
   },
   "dependencies": {
-    "@octokit/rest": "^18.0.7",
-    "dotenv": "^8.2.0"
+    "@octokit/rest": "^18.0.7"
   }
 }
