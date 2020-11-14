@@ -1,6 +1,6 @@
 {
-  "name": "ghdatabase",
-  "version": "1.0.0",
+  "name": "@agusti/ghdbjs",
+  "version": "0.0.1",
   "description": "",
   "main": "ghdb.js",
   "scripts": {
