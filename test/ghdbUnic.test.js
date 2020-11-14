@@ -1,5 +1,5 @@
 // Unic test file
-const Ghdb = require("../src/ghdb");
+const Ghdb = require("../ghdb");
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, `../.env.${process.env.NODE_ENV}`) });
 var ghdbObj
