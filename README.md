@@ -38,7 +38,7 @@ ghdbjs.generateUID
 ghdbjs.create
 ghdbjs.read
 ghdbjs.remove
-ghdbjs.upload
+ghdbjs.update
 ghdbjs.addCategoryToUuid
 ghdbjs.removeCategoryToUuid
 ghdbjs.readCategoriesFromUuid

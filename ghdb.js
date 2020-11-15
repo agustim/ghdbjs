@@ -83,7 +83,7 @@ function Ghdb ( config ) {
         return {status: "ok"}
     }
 
-    this.upload = async function (uuid, obj){
+    this.update = async function (uuid, obj){
         obj = await this.automaticFields(obj, uuid)
         // Write record
         await this.lowWriteGithub(this.storage + uuid, obj)
